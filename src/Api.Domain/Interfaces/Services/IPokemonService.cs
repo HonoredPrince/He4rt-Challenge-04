@@ -9,6 +9,7 @@ namespace Api.Domain.Interfaces.Services
     {
         Task<IEnumerable<PokemonDTO>> GetAll();
         Task<PokemonDTO> GetById(Guid id);
+        Task<PokemonPokeApiDTO> GetPokemonByName(string name);
         Task<PokemonCreateResultDTO> Post(PokemonCreateDTO pokemon);
         Task<PokemonUpdateResultDTO> Put(PokemonUpdateDTO pokemon);
         Task<bool> Delete(Guid id);

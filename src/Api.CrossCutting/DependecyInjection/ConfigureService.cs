@@ -9,6 +9,7 @@ namespace Api.CrossCutting.DependecyInjection
         public static void ConfigureDependenciesServices(IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<ITrainerService, TrainerService>();
+            serviceCollection.AddTransient<IPokemonService, PokemonService>();
         }
     }
 }

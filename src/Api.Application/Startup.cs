@@ -40,6 +40,7 @@ namespace Application
                 cfg.AddProfile(new DtoToModelProfile());
                 cfg.AddProfile(new EntityToDtoProfile());
                 cfg.AddProfile(new ModelToEntityProfile());
+                cfg.AddProfile(new PokemonToDtoProfile());
             });
 
             IMapper mapper = configMapper.CreateMapper();

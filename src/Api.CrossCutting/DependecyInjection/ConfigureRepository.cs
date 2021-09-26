@@ -12,6 +12,7 @@ namespace Api.CrossCutting.DependecyInjection
         {
             serviceCollection.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
             serviceCollection.AddScoped<ITrainerRepository, TrainerRepository>();
+            serviceCollection.AddScoped<IPokemonRepository, PokemonRepository>();
 
             var connectionString = "Persist Security Info=True;Server=localhost;Port=3306;Database=PokeAPI-Heart-Challenge;Uid=root;Pwd=451236";
             serviceCollection.AddDbContext<MyContext>(
