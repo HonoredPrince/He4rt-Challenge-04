@@ -10,6 +10,9 @@ namespace Api.CrossCutting.Mapping
         {
             //Trainer
             CreateMap<TrainerModel, TrainerEntity>().ReverseMap();
+
+            //Pokemon
+            CreateMap<PokemonModel, PokemonEntity>().ReverseMap();
         }
     }
 }

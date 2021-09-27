@@ -1,3 +1,4 @@
+using System;
 using Api.Domain.DTOs.Pokemon;
 using AutoMapper;
 using PokeApiNet;

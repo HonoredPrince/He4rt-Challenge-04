@@ -1,3 +1,5 @@
+using System;
+
 namespace Api.Domain.DTOs.Pokemon
 {
     public class PokemonPokeApiDTO

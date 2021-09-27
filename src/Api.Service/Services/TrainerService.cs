@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Api.Domain.DTOs.Pokemon;
 using Api.Domain.DTOs.Trainer;
 using Api.Domain.Entities;
 using Api.Domain.Interfaces.Repository;
@@ -14,11 +15,13 @@ namespace Api.Service.Services
     public class TrainerService : ITrainerService
     {
         private readonly ITrainerRepository _repository;
+        private readonly IPokemonRepository _pokemonRepository;
         private readonly IMapper _mapper;
 
-        public TrainerService(ITrainerRepository repository, IMapper mapper)
+        public TrainerService(ITrainerRepository repository, IPokemonRepository pokemonRepository, IMapper mapper)
         {
             _repository = repository;
+            _pokemonRepository = pokemonRepository;
             _mapper = mapper;
         }
 
@@ -54,6 +57,17 @@ namespace Api.Service.Services
         public async Task<bool> Delete(Guid id)
         {
             return await _repository.DeleteAsync(id);
+        }
+
+        public async Task<TrainerCompleteDTO> AddPokemonToPokedex(Guid trainerId, PokemonAddDTO pokemon)
+        {
+            if (!await _pokemonRepository.ExistsAsync(pokemon.Id) || !await _repository.ExistsAsync(trainerId))
+            {
+                return null;
+            }
+            var pokemonEntity = await _pokemonRepository.FindCompleteById(pokemon.Id);
+
+            return _mapper.Map<TrainerCompleteDTO>(await _repository.AddPokemonToPokedex(trainerId, pokemonEntity));
         }
     }
 }

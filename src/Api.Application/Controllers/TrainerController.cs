@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using Api.Domain.DTOs.Pokemon;
 using Api.Domain.DTOs.Trainer;
 using Api.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -52,6 +53,32 @@ namespace Api.Application.Controllers
             try
             {
                 var result = await _service.Post(trainer);
+                if (result != null)
+                {
+                    return Created(new Uri(Url.Link("GetTrainerWithId", new { id = result.Id })), result);
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("addPokemonToPokedex/{trainerId}", Name = "AddPokemonToPokedex")]
+        public async Task<IActionResult> Post(Guid trainerId, [FromBody] PokemonAddDTO pokemonToAdd)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _service.AddPokemonToPokedex(trainerId, pokemonToAdd);
                 if (result != null)
                 {
                     return Created(new Uri(Url.Link("GetTrainerWithId", new { id = result.Id })), result);
