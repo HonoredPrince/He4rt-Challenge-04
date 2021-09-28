@@ -31,12 +31,17 @@ namespace Api.Service.Services
             return _mapper.Map<IEnumerable<TrainerDTO>>(listEntity);
         }
 
+        public async Task<TrainerCompleteDTO> GetCompleteTrainerById(Guid id)
+        {
+            return _mapper.Map<TrainerCompleteDTO>(await _repository.FindCompleteById(id));
+        }
+
         public async Task<TrainerDTO> GetById(Guid id)
         {
             return _mapper.Map<TrainerDTO>(await _repository.FindByIdAsync(id));
         }
 
-        public async Task<TrainerCreateResultDTO> Post(TrainerCreateDTO trainerCreated)
+        public async Task<TrainerCreateResultDTO> Create(TrainerCreateDTO trainerCreated)
         {
             var model = _mapper.Map<TrainerModel>(trainerCreated);
             var entity = _mapper.Map<TrainerEntity>(model);
@@ -45,7 +50,7 @@ namespace Api.Service.Services
             return _mapper.Map<TrainerCreateResultDTO>(result);
         }
 
-        public async Task<TrainerUpdateResultDTO> Put(TrainerUpdateDTO trainerUpdated)
+        public async Task<TrainerUpdateResultDTO> Update(TrainerUpdateDTO trainerUpdated)
         {
             var model = _mapper.Map<TrainerModel>(trainerUpdated);
             var entity = _mapper.Map<TrainerEntity>(model);

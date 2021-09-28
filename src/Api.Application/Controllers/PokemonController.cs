@@ -83,7 +83,7 @@ namespace Api.Application.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] PokemonCreateDTO pokemonAdded)
+        public async Task<IActionResult> CreatePokemon([FromBody] PokemonCreateDTO pokemonAdded)
         {
             if (!ModelState.IsValid)
             {
@@ -91,7 +91,7 @@ namespace Api.Application.Controllers
             }
             try
             {
-                var result = await _service.Post(pokemonAdded);
+                var result = await _service.Create(pokemonAdded);
                 if (result != null)
                 {
                     return Created(new Uri(Url.Link("GetPokemonById", new { id = result.Id })), result);

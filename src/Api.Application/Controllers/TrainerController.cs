@@ -20,8 +20,31 @@ namespace Api.Application.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetAllTrainers()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _service.GetAll();
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("{id}", Name = "GetTrainerWithId")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<IActionResult> GetTrainerById(Guid id)
         {
             if (!ModelState.IsValid)
             {
@@ -43,8 +66,9 @@ namespace Api.Application.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] TrainerCreateDTO trainer)
+        [HttpGet]
+        [Route("completeTrainer/{id}", Name = "GetCompleteTrainerWithId")]
+        public async Task<IActionResult> GetCompleteTrainerById(Guid id)
         {
             if (!ModelState.IsValid)
             {
@@ -52,7 +76,30 @@ namespace Api.Application.Controllers
             }
             try
             {
-                var result = await _service.Post(trainer);
+                var result = await _service.GetCompleteTrainerById(id);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTrainer([FromBody] TrainerCreateDTO trainer)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _service.Create(trainer);
                 if (result != null)
                 {
                     return Created(new Uri(Url.Link("GetTrainerWithId", new { id = result.Id })), result);
@@ -70,7 +117,7 @@ namespace Api.Application.Controllers
 
         [HttpPost]
         [Route("addPokemonToPokedex/{trainerId}", Name = "AddPokemonToPokedex")]
-        public async Task<IActionResult> Post(Guid trainerId, [FromBody] PokemonAddDTO pokemonToAdd)
+        public async Task<IActionResult> AddPokemonToPokedex(Guid trainerId, [FromBody] PokemonAddDTO pokemonToAdd)
         {
             if (!ModelState.IsValid)
             {
@@ -82,6 +129,31 @@ namespace Api.Application.Controllers
                 if (result != null)
                 {
                     return Created(new Uri(Url.Link("GetTrainerWithId", new { id = result.Id })), result);
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTrainer(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _service.Delete(id);
+                if (result)
+                {
+                    return Ok(result);
                 }
                 else
                 {

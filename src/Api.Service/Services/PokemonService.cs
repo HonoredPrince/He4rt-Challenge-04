@@ -42,7 +42,7 @@ namespace Api.Service.Services
             return _mapper.Map<PokemonPokeApiDTO>(pokemon);
         }
 
-        public async Task<PokemonCreateResultDTO> Post(PokemonCreateDTO pokemonAdded)
+        public async Task<PokemonCreateResultDTO> Create(PokemonCreateDTO pokemonAdded)
         {
             Pokemon pokemon;
             try

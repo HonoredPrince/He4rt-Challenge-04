@@ -20,6 +20,19 @@ namespace Api.Data.Repository
             _pokemonDataSet = context.Set<PokemonEntity>();
         }
 
+
+        public async Task<TrainerEntity> FindCompleteById(Guid id)
+        {
+            try
+            {
+                return await _dataset.Include(t => t.Pokemons).FirstOrDefaultAsync(t => t.Id.Equals(id));
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<TrainerEntity> AddPokemonToPokedex(Guid id, PokemonEntity pokemon)
         {
             TrainerEntity trainerEntity;
