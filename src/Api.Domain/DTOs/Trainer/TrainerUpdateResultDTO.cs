@@ -8,6 +8,7 @@ namespace Api.Domain.DTOs.Trainer
         public string Name { get; set; }
         public string Region { get; set; }
         public int Age { get; set; }
+        public Guid UserId { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
 }

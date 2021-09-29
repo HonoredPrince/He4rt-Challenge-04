@@ -1,18 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Api.CrossCutting.DependecyInjection;
 using Api.CrossCutting.Mapping;
+using Api.Data.Context;
+using Api.Domain.Security;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace Application
@@ -46,6 +54,41 @@ namespace Application
             IMapper mapper = configMapper.CreateMapper();
             services.AddSingleton(mapper);
 
+            var tokenConfigurations = new TokenConfiguration();
+            new ConfigureFromConfigurationOptions<TokenConfiguration>(
+                Configuration.GetSection("TokenConfigurations")
+            ).Configure(tokenConfigurations);
+
+            services.AddSingleton(tokenConfigurations);
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = tokenConfigurations.Issuer,
+                    ValidAudience = tokenConfigurations.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret)),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser()
+                    .Build());
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -59,6 +102,25 @@ namespace Application
                         Name = "Matthew",
                         Email = "matheuspsnbrasil@hotmail.com",
                         Url = new Uri("https://github.com/HonoredPrince")
+                    }
+                });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "Entre com o Token JWT",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme {
+                            Reference = new OpenApiReference {
+                                Id = "Bearer",
+                                Type = ReferenceType.SecurityScheme
+                            }
+                        }, new List<string>()
                     }
                 });
             });
@@ -88,6 +150,22 @@ namespace Application
             {
                 endpoints.MapControllers();
             });
+
+            //This method using the string variable is only temporary until the environment variables are created 
+            string migrationStatus;
+            migrationStatus = "APLICAR";
+            //migrationStatus = "NAOAPLICAR";
+            if (migrationStatus == "APLICAR".ToLower())
+            {
+                using (var service = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+                {
+                    //Pass the database context to the service provider
+                    using (var context = service.ServiceProvider.GetService<MyContext>())
+                    {
+                        context.Database.Migrate();
+                    }
+                }
+            }
         }
     }
 }

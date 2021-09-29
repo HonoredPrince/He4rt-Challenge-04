@@ -13,5 +13,6 @@ namespace Api.Domain.DTOs.Trainer
         public string Region { get; set; }
         [Required(ErrorMessage = "Age é um campo obrigatório")]
         public int Age { get; set; }
+        public Guid UserId { get; set; }
     }
 }

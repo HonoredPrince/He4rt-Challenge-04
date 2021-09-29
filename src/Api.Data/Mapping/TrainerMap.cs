@@ -21,6 +21,8 @@ namespace Api.Data.Mapping
             builder.Property(u => u.Age)
                 .IsRequired();
 
+            builder.HasOne(u => u.User);
+
             builder.HasMany<PokemonEntity>(u => u.Pokemons);
         }
     }

@@ -11,21 +11,19 @@ namespace Api.Data.Repository
 {
     public class TrainerRepository : GenericRepository<TrainerEntity>, ITrainerRepository
     {
-        private readonly DbSet<TrainerEntity> _dataset;
-        private readonly DbSet<PokemonEntity> _pokemonDataSet;
-
         public TrainerRepository(MyContext context) : base(context)
         {
-            _dataset = context.Set<TrainerEntity>();
-            _pokemonDataSet = context.Set<PokemonEntity>();
-        }
 
+        }
 
         public async Task<TrainerEntity> FindCompleteById(Guid id)
         {
             try
             {
-                return await _dataset.Include(t => t.Pokemons).FirstOrDefaultAsync(t => t.Id.Equals(id));
+                return await _dataset
+                    .Include(t => t.User)
+                    .Include(t => t.Pokemons)
+                    .FirstOrDefaultAsync(t => t.Id.Equals(id));
             }
             catch (System.Exception)
             {

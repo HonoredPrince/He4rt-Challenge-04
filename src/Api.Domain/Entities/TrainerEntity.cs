@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -9,6 +10,8 @@ namespace Api.Domain.Entities
         public string Name { get; set; }
         public string Region { get; set; }
         public int Age { get; set; }
+        public Guid UserId { get; set; }
+        public UserEntity User { get; set; }
         public IEnumerable<PokemonEntity> Pokemons { get; set; }
     }
 }

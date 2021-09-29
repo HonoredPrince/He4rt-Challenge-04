@@ -11,7 +11,7 @@ namespace Api.Data.Repository
     public class GenericRepository<T> : IRepository<T> where T : BaseEntity
     {
         protected readonly MyContext _context;
-        private DbSet<T> _dataset;
+        protected readonly DbSet<T> _dataset;
 
         public GenericRepository(MyContext context)
         {

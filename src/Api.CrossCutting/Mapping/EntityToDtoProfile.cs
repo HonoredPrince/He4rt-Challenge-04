@@ -1,5 +1,6 @@
 using Api.Domain.DTOs.Pokemon;
 using Api.Domain.DTOs.Trainer;
+using Api.Domain.DTOs.User;
 using Api.Domain.Entities;
 using AutoMapper;
 
@@ -19,6 +20,12 @@ namespace Api.CrossCutting.Mapping
             CreateMap<PokemonDTO, PokemonEntity>().ReverseMap();
             CreateMap<PokemonCreateResultDTO, PokemonEntity>().ReverseMap();
             CreateMap<PokemonUpdateResultDTO, PokemonEntity>().ReverseMap();
+
+            //User
+            CreateMap<UserDTO, UserEntity>().ReverseMap();
+            CreateMap<UserLoginDTO, UserEntity>().ReverseMap();
+            CreateMap<UserCreateResultDTO, UserEntity>().ReverseMap();
+            CreateMap<UserUpdateResultDTO, UserEntity>().ReverseMap();
         }
     }
 }

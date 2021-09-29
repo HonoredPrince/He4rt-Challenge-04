@@ -1,7 +1,8 @@
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Api.Domain.DTOs.Pokemon;
+using Api.Domain.DTOs.User;
+using Api.Domain.Entities;
 using Api.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,25 +11,32 @@ namespace Api.Application.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PokemonController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private IPokemonService _service;
+        private IUserService _service;
 
-        public PokemonController(IPokemonService service)
+        public UserController(IUserService service)
         {
             _service = service;
         }
 
         [Authorize("Bearer")]
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllUsers()
         {
-            //Valida se o modelo do dado de input, caso não retorna um BadRequest(400)
             if (!ModelState.IsValid)
-                return BadRequest(ModelState); //400
+            {
+                return BadRequest(ModelState);
+            }
             try
             {
-                return Ok(await _service.GetAll());
+                var result = await _service.GetAll();
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
             }
             catch (ArgumentException e)
             {
@@ -38,8 +46,8 @@ namespace Api.Application.Controllers
 
         [Authorize("Bearer")]
         [HttpGet]
-        [Route("{id}", Name = "GetPokemonById")]
-        public async Task<IActionResult> GetById(Guid id)
+        [Route("{id}", Name = "GetUserWithId")]
+        public async Task<IActionResult> GetUserById(Guid id)
         {
             if (!ModelState.IsValid)
             {
@@ -61,34 +69,9 @@ namespace Api.Application.Controllers
             }
         }
 
-        [Authorize("Bearer")]
-        [HttpGet]
-        [Route("getByName/{pokemonName}", Name = "GetPokemonByName")]
-        public async Task<IActionResult> GetByName(string pokemonName)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            try
-            {
-                var result = await _service.GetPokemonByName(pokemonName);
-                if (result == null)
-                {
-                    return NotFound();
-                }
-
-                return Ok(result);
-            }
-            catch (ArgumentException e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
-            }
-        }
-
-        [Authorize("Bearer")]
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> CreatePokemon([FromBody] PokemonCreateDTO pokemonAdded)
+        public async Task<IActionResult> CreateUser([FromBody] UserCreateDTO trainer)
         {
             if (!ModelState.IsValid)
             {
@@ -96,33 +79,15 @@ namespace Api.Application.Controllers
             }
             try
             {
-                var result = await _service.Create(pokemonAdded);
+                var result = await _service.Create(trainer);
                 if (result != null)
                 {
-                    return Created(new Uri(Url.Link("GetPokemonById", new { id = result.Id })), result);
+                    return Created(new Uri(Url.Link("GetUserWithId", new { id = result.Id })), result);
                 }
                 else
                 {
                     return BadRequest(ModelState);
                 }
-            }
-            catch (ArgumentException e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
-            }
-        }
-
-        [Authorize("Bearer")]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            try
-            {
-                return Ok(await _service.Delete(id));
             }
             catch (ArgumentException e)
             {

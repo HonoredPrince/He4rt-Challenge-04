@@ -72,12 +72,64 @@ namespace Data.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Trainer");
+                });
+
+            modelBuilder.Entity("Api.Domain.Entities.UserEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(130)
+                        .HasColumnType("varchar(130)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
+
+                    b.Property<DateTime>("RefreshTokenExpireTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("2021b57f-7386-4a9b-b9a7-ac87f7a8d5e0"),
+                            CreatedAt = new DateTime(2021, 9, 29, 0, 21, 32, 864, DateTimeKind.Utc).AddTicks(9303),
+                            Email = "adminuser@mail.com",
+                            Password = "24-0B-E5-18-FA-BD-27-24-DD-B6-F0-4E-EB-1D-A5-96-74-48-D7-E8-31-C0-8C-8F-A8-22-80-9F-74-C7-20-A9",
+                            RefreshToken = "SampleRefreshToken",
+                            RefreshTokenExpireTime = new DateTime(2021, 9, 29, 0, 21, 32, 864, DateTimeKind.Utc).AddTicks(8994),
+                            UpdatedAt = new DateTime(2021, 9, 29, 0, 21, 32, 865, DateTimeKind.Utc).AddTicks(775)
+                        });
                 });
 
             modelBuilder.Entity("PokemonEntityTrainerEntity", b =>
@@ -93,6 +145,17 @@ namespace Data.Migrations
                     b.HasIndex("TrainersId");
 
                     b.ToTable("PokemonEntityTrainerEntity");
+                });
+
+            modelBuilder.Entity("Api.Domain.Entities.TrainerEntity", b =>
+                {
+                    b.HasOne("Api.Domain.Entities.UserEntity", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PokemonEntityTrainerEntity", b =>

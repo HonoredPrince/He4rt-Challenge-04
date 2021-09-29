@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Api.Domain.DTOs.Pokemon;
 using Api.Domain.DTOs.Trainer;
 using Api.Domain.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Application.Controllers
@@ -19,6 +20,7 @@ namespace Api.Application.Controllers
             _service = service;
         }
 
+        [Authorize("Bearer")]
         [HttpGet]
         public async Task<IActionResult> GetAllTrainers()
         {
@@ -42,6 +44,7 @@ namespace Api.Application.Controllers
             }
         }
 
+        [Authorize("Bearer")]
         [HttpGet]
         [Route("{id}", Name = "GetTrainerWithId")]
         public async Task<IActionResult> GetTrainerById(Guid id)
@@ -66,6 +69,7 @@ namespace Api.Application.Controllers
             }
         }
 
+        [Authorize("Bearer")]
         [HttpGet]
         [Route("completeTrainer/{id}", Name = "GetCompleteTrainerWithId")]
         public async Task<IActionResult> GetCompleteTrainerById(Guid id)
@@ -90,6 +94,7 @@ namespace Api.Application.Controllers
             }
         }
 
+        [Authorize("Bearer")]
         [HttpPost]
         public async Task<IActionResult> CreateTrainer([FromBody] TrainerCreateDTO trainer)
         {
@@ -115,6 +120,7 @@ namespace Api.Application.Controllers
             }
         }
 
+        [Authorize("Bearer")]
         [HttpPost]
         [Route("addPokemonToPokedex/{trainerId}", Name = "AddPokemonToPokedex")]
         public async Task<IActionResult> AddPokemonToPokedex(Guid trainerId, [FromBody] PokemonAddDTO pokemonToAdd)
@@ -141,6 +147,7 @@ namespace Api.Application.Controllers
             }
         }
 
+        [Authorize("Bearer")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTrainer(Guid id)
         {

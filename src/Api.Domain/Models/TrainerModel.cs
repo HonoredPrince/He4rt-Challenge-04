@@ -1,3 +1,5 @@
+using System;
+
 namespace Api.Domain.Models
 {
     public class TrainerModel : BaseModel
@@ -21,6 +23,13 @@ namespace Api.Domain.Models
         {
             get { return _age; }
             set { _age = value; }
+        }
+
+        private Guid _userId;
+        public Guid UserId
+        {
+            get { return _userId; }
+            set { _userId = value; }
         }
     }
 }

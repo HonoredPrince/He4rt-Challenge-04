@@ -9,11 +9,9 @@ namespace Api.Data.Repository
 {
     public class PokemonRepository : GenericRepository<PokemonEntity>, IPokemonRepository
     {
-        private readonly DbSet<PokemonEntity> _dataset;
-
         public PokemonRepository(MyContext context) : base(context)
         {
-            _dataset = context.Set<PokemonEntity>();
+
         }
 
         public async Task<PokemonEntity> FindCompleteById(Guid id)
