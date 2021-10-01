@@ -89,6 +89,14 @@ namespace Application
                     .Build());
             });
 
+            services.AddCors(options => options.AddDefaultPolicy(builder =>
+            {
+                builder.WithOrigins(Configuration.GetSection("AllowedOrigins").Get<string[]>());
+                builder.AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+            }));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -142,6 +150,8 @@ namespace Application
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
