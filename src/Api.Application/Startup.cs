@@ -96,7 +96,6 @@ namespace Application
                     Version = "v1",
                     Title = "Desafio 04 - He4rt",
                     Description = "Pokemon Challenge",
-                    TermsOfService = new Uri("https://github.com/HonoredPrince"),
                     Contact = new OpenApiContact
                     {
                         Name = "Matthew",

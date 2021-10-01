@@ -80,7 +80,8 @@ namespace Data.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Trainer");
                 });
@@ -122,13 +123,13 @@ namespace Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2021b57f-7386-4a9b-b9a7-ac87f7a8d5e0"),
-                            CreatedAt = new DateTime(2021, 9, 29, 0, 21, 32, 864, DateTimeKind.Utc).AddTicks(9303),
+                            Id = new Guid("923c9a5b-6936-400b-9824-d66836995e42"),
+                            CreatedAt = new DateTime(2021, 10, 1, 13, 54, 9, 988, DateTimeKind.Utc).AddTicks(849),
                             Email = "adminuser@mail.com",
                             Password = "24-0B-E5-18-FA-BD-27-24-DD-B6-F0-4E-EB-1D-A5-96-74-48-D7-E8-31-C0-8C-8F-A8-22-80-9F-74-C7-20-A9",
                             RefreshToken = "SampleRefreshToken",
-                            RefreshTokenExpireTime = new DateTime(2021, 9, 29, 0, 21, 32, 864, DateTimeKind.Utc).AddTicks(8994),
-                            UpdatedAt = new DateTime(2021, 9, 29, 0, 21, 32, 865, DateTimeKind.Utc).AddTicks(775)
+                            RefreshTokenExpireTime = new DateTime(2021, 10, 1, 13, 54, 9, 988, DateTimeKind.Utc).AddTicks(670),
+                            UpdatedAt = new DateTime(2021, 10, 1, 13, 54, 9, 988, DateTimeKind.Utc).AddTicks(1807)
                         });
                 });
 
@@ -150,8 +151,8 @@ namespace Data.Migrations
             modelBuilder.Entity("Api.Domain.Entities.TrainerEntity", b =>
                 {
                     b.HasOne("Api.Domain.Entities.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("Trainer")
+                        .HasForeignKey("Api.Domain.Entities.TrainerEntity", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -171,6 +172,11 @@ namespace Data.Migrations
                         .HasForeignKey("TrainersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Api.Domain.Entities.UserEntity", b =>
+                {
+                    b.Navigation("Trainer");
                 });
 #pragma warning restore 612, 618
         }

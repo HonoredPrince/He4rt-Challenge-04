@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data.Migrations
 {
-    public partial class InitialDatabaseMigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -105,7 +105,7 @@ namespace Data.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "CreatedAt", "Email", "Password", "RefreshToken", "RefreshTokenExpireTime", "UpdatedAt" },
-                values: new object[] { new Guid("2021b57f-7386-4a9b-b9a7-ac87f7a8d5e0"), new DateTime(2021, 9, 29, 0, 21, 32, 864, DateTimeKind.Utc).AddTicks(9303), "adminuser@mail.com", "24-0B-E5-18-FA-BD-27-24-DD-B6-F0-4E-EB-1D-A5-96-74-48-D7-E8-31-C0-8C-8F-A8-22-80-9F-74-C7-20-A9", "SampleRefreshToken", new DateTime(2021, 9, 29, 0, 21, 32, 864, DateTimeKind.Utc).AddTicks(8994), new DateTime(2021, 9, 29, 0, 21, 32, 865, DateTimeKind.Utc).AddTicks(775) });
+                values: new object[] { new Guid("923c9a5b-6936-400b-9824-d66836995e42"), new DateTime(2021, 10, 1, 13, 54, 9, 988, DateTimeKind.Utc).AddTicks(849), "adminuser@mail.com", "24-0B-E5-18-FA-BD-27-24-DD-B6-F0-4E-EB-1D-A5-96-74-48-D7-E8-31-C0-8C-8F-A8-22-80-9F-74-C7-20-A9", "SampleRefreshToken", new DateTime(2021, 10, 1, 13, 54, 9, 988, DateTimeKind.Utc).AddTicks(670), new DateTime(2021, 10, 1, 13, 54, 9, 988, DateTimeKind.Utc).AddTicks(1807) });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pokemon_Name",
@@ -127,7 +127,8 @@ namespace Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Trainer_UserId",
                 table: "Trainer",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_Email",

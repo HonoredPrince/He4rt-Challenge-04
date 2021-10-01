@@ -23,6 +23,10 @@ namespace Api.Data.Mapping
                 .HasMaxLength(500);
 
             builder.Property(u => u.RefreshTokenExpireTime);
+
+            builder.HasOne(u => u.Trainer)
+                .WithOne(t => t.User)
+                .HasForeignKey<TrainerEntity>(t => t.UserId);
         }
     }
 }

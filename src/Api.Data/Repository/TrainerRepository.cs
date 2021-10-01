@@ -38,8 +38,7 @@ namespace Api.Data.Repository
 
             try
             {
-                //trainerEntity = await _dataset.SingleOrDefaultAsync(t => t.Id.Equals(id));
-                trainerEntity = await _dataset.Include(t => t.Pokemons).FirstOrDefaultAsync(t => t.Id.Equals(id));
+                trainerEntity = await _dataset.Include(t => t.User).Include(t => t.Pokemons).FirstOrDefaultAsync(t => t.Id.Equals(id));
 
                 pokemonList = trainerEntity.Pokemons.ToList();
                 pokemonList.Add(pokemon);
@@ -53,6 +52,31 @@ namespace Api.Data.Repository
             }
 
             return trainerEntity;
+        }
+
+        public async Task<bool> RemovePokemonFromPokedex(Guid trainerId, Guid pokemonId)
+        {
+            try
+            {
+                if (!await this.ExistsAsync(trainerId))
+                    return false;
+
+                var trainerEntity = await _dataset.Include(t => t.Pokemons).FirstOrDefaultAsync(t => t.Id.Equals(trainerId));
+                var pokemonList = trainerEntity.Pokemons.ToList();
+
+                if (!pokemonList.Any(p => p.Id.Equals(pokemonId)))
+                    return false;
+
+                pokemonList.Remove(pokemonList.FirstOrDefault(p => p.Id.Equals(pokemonId)));
+                trainerEntity.Pokemons = pokemonList;
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Api.Data.Context;
 using Api.Domain.Entities;
@@ -77,6 +78,32 @@ namespace Api.Data.Repository
                 item.CreatedAt = result.CreatedAt;
 
                 _context.Entry(result).CurrentValues.SetValues(item);
+                await _context.SaveChangesAsync();
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+
+            return item;
+        }
+
+        public async Task<T> UpdatePartialAsync(T item, params Expression<Func<T, object>>[] includeProperties)
+        {
+            try
+            {
+                foreach (var includeProperty in includeProperties)
+                {
+                    _context.Entry(item).Property(includeProperty).IsModified = true;
+                }
+
+                var result = await _dataset.SingleOrDefaultAsync(p => p.Id.Equals(item.Id));
+                if (result == null)
+                    return null;
+
+                item.UpdatedAt = DateTime.UtcNow;
+                item.CreatedAt = result.CreatedAt;
+
                 await _context.SaveChangesAsync();
             }
             catch (System.Exception)

@@ -14,6 +14,7 @@ namespace Api.Domain.Interfaces.Services
         Task<TrainerDTO> GetById(Guid id);
         Task<TrainerCreateResultDTO> Create(TrainerCreateDTO trainer);
         Task<TrainerCompleteDTO> AddPokemonToPokedex(Guid trainerId, PokemonAddDTO pokemon);
+        Task<bool> RemovePokemonFromPokedex(Guid trainerId, Guid pokemonId);
         Task<TrainerUpdateResultDTO> Update(TrainerUpdateDTO trainer);
         Task<bool> Delete(Guid id);
     }

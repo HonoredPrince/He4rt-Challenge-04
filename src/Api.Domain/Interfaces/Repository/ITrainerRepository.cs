@@ -8,5 +8,6 @@ namespace Api.Domain.Interfaces.Repository
     {
         Task<TrainerEntity> FindCompleteById(Guid id);
         Task<TrainerEntity> AddPokemonToPokedex(Guid id, PokemonEntity pokemon);
+        Task<bool> RemovePokemonFromPokedex(Guid trainerId, Guid pokemonId);
     }
 }

@@ -20,7 +20,10 @@
                 "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "DB_PROVIDER": "MYSQL",
+                "DB_CONNECTION_STRING": "Persist Security Info=True;Server=localhost;Port=3306;Database=PokeAPI-Heart-Challenge;Uid=root;Pwd=451236",
+                "MIGRATION_STATUS": "APLICAR",
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

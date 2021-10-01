@@ -107,7 +107,7 @@ namespace Api.Application.Controllers
                 var result = await _service.Create(trainer);
                 if (result != null)
                 {
-                    return Created(new Uri(Url.Link("GetTrainerWithId", new { id = result.Id })), result);
+                    return Created(new Uri(Url.Link("GetTrainerWithId", new { id = result.Id })), result); //TODO: See why email and createdAt fields for User related to the trainer is missing
                 }
                 else
                 {
@@ -134,7 +134,60 @@ namespace Api.Application.Controllers
                 var result = await _service.AddPokemonToPokedex(trainerId, pokemonToAdd);
                 if (result != null)
                 {
-                    return Created(new Uri(Url.Link("GetTrainerWithId", new { id = result.Id })), result);
+                    return Created(new Uri(Url.Link("GetCompleteTrainerWithId", new { id = result.Id })), result);
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [Authorize("Bearer")]
+        [HttpDelete]
+        [Route("removePokemonFromPokedex/{trainerId}", Name = "RemovePokemonFromPokedex")]
+        public async Task<IActionResult> RemovePokemonFromPokedex(Guid trainerId, [FromQuery] Guid pokemonId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _service.RemovePokemonFromPokedex(trainerId, pokemonId);
+                if (result)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [Authorize("Bearer")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateTrainer([FromBody] TrainerUpdateDTO trainer)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _service.Update(trainer);
+                if (result != null)
+                {
+                    return Ok(result);
                 }
                 else
                 {

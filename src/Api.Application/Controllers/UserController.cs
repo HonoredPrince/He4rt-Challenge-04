@@ -71,7 +71,7 @@ namespace Api.Application.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] UserCreateDTO trainer)
+        public async Task<IActionResult> CreateUser([FromBody] UserCreateDTO user)
         {
             if (!ModelState.IsValid)
             {
@@ -79,10 +79,62 @@ namespace Api.Application.Controllers
             }
             try
             {
-                var result = await _service.Create(trainer);
+                var result = await _service.Create(user);
                 if (result != null)
                 {
                     return Created(new Uri(Url.Link("GetUserWithId", new { id = result.Id })), result);
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [Authorize("Bearer")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser([FromBody] UserUpdateDTO user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _service.Update(user);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [Authorize("Bearer")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _service.Delete(id);
+                if (result)
+                {
+                    return Ok(result);
                 }
                 else
                 {

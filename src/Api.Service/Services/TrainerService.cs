@@ -54,7 +54,10 @@ namespace Api.Service.Services
         {
             var model = _mapper.Map<TrainerModel>(trainerUpdated);
             var entity = _mapper.Map<TrainerEntity>(model);
-            var result = await _repository.UpdateAsync(entity);
+            var result = await _repository.UpdatePartialAsync(entity,
+                                                                    e => e.Name,
+                                                                    e => e.Age,
+                                                                    e => e.Region);
 
             return _mapper.Map<TrainerUpdateResultDTO>(result);
         }
@@ -73,6 +76,11 @@ namespace Api.Service.Services
             var pokemonEntity = await _pokemonRepository.FindCompleteById(pokemon.Id);
 
             return _mapper.Map<TrainerCompleteDTO>(await _repository.AddPokemonToPokedex(trainerId, pokemonEntity));
+        }
+
+        public async Task<bool> RemovePokemonFromPokedex(Guid trainerId, Guid pokemonId)
+        {
+            return await _repository.RemovePokemonFromPokedex(trainerId, pokemonId);
         }
     }
 }

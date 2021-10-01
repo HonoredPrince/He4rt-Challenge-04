@@ -9,5 +9,6 @@ namespace Api.Domain.Entities
         public string Password { get; set; }
         public string RefreshToken { get; set; }
         public DateTime RefreshTokenExpireTime { get; set; }
+        public TrainerEntity Trainer { get; set; }
     }
 }
