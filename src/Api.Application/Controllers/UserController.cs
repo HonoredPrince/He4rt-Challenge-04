@@ -69,6 +69,31 @@ namespace Api.Application.Controllers
             }
         }
 
+        [Authorize("Bearer")]
+        [HttpGet]
+        [Route("getByEmail", Name = "GetUserWithEmail")]
+        public async Task<IActionResult> GetUserByEmail([FromQuery] string email)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _service.GetByEmail(email);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserCreateDTO user)

@@ -11,6 +11,7 @@ namespace Api.Domain.Interfaces.Services
     {
         Task<IEnumerable<TrainerDTO>> GetAll();
         Task<TrainerCompleteDTO> GetCompleteTrainerById(Guid id);
+        Task<TrainerCompleteDTO> GetCompleteTrainerByUserId(Guid userId);
         Task<TrainerDTO> GetById(Guid id);
         Task<TrainerCreateResultDTO> Create(TrainerCreateDTO trainer);
         Task<TrainerCompleteDTO> AddPokemonToPokedex(Guid trainerId, PokemonAddDTO pokemon);

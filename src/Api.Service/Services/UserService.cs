@@ -34,6 +34,11 @@ namespace Api.Service.Services
             return _mapper.Map<UserDTO>(await _repository.FindByIdAsync(id));
         }
 
+        public async Task<UserDTO> GetByEmail(string email)
+        {
+            return _mapper.Map<UserDTO>(await _repository.FindByEmail(email));
+        }
+
         public async Task<UserCreateResultDTO> Create(UserCreateDTO user)
         {
             string userHashedPassword = ComputeHash(user.Password, new SHA256CryptoServiceProvider());

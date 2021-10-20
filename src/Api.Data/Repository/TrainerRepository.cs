@@ -20,10 +20,26 @@ namespace Api.Data.Repository
         {
             try
             {
-                return await _dataset
+                var result = await _dataset
                     .Include(t => t.User)
                     .Include(t => t.Pokemons)
                     .FirstOrDefaultAsync(t => t.Id.Equals(id));
+                return result;
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<TrainerEntity> FindCompleteByUserId(Guid userId)
+        {
+            try
+            {
+                return await _dataset
+                    .Include(t => t.User)
+                    .Include(t => t.Pokemons)
+                    .FirstOrDefaultAsync(t => t.UserId.Equals(userId));
             }
             catch (System.Exception)
             {

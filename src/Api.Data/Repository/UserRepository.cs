@@ -81,5 +81,19 @@ namespace Api.Data.Repository
             Byte[] hashedBytes = hashAlgorithm.ComputeHash(inputBytes);
             return BitConverter.ToString(hashedBytes);
         }
+
+        public async Task<UserEntity> FindByEmail(string email)
+        {
+            if (!await _dataset.AnyAsync(u => u.Email.Equals(email)))
+                return null;
+            try
+            {
+                return await _dataset.SingleOrDefaultAsync(u => u.Email.Equals(email));
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
     }
 }

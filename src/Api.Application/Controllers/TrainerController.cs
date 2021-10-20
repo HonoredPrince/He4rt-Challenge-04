@@ -71,7 +71,7 @@ namespace Api.Application.Controllers
 
         [Authorize("Bearer")]
         [HttpGet]
-        [Route("completeTrainer/{id}", Name = "GetCompleteTrainerWithId")]
+        [Route("completeTrainerById/{id}", Name = "GetCompleteTrainerWithId")]
         public async Task<IActionResult> GetCompleteTrainerById(Guid id)
         {
             if (!ModelState.IsValid)
@@ -81,6 +81,31 @@ namespace Api.Application.Controllers
             try
             {
                 var result = await _service.GetCompleteTrainerById(id);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, e.Message);
+            }
+        }
+
+        [Authorize("Bearer")]
+        [HttpGet]
+        [Route("completeTrainerByUserId/{userId}", Name = "GetCompleteTrainerWithUserId")]
+        public async Task<IActionResult> GetCompleteTrainerByUserId(Guid userId)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            try
+            {
+                var result = await _service.GetCompleteTrainerByUserId(userId);
                 if (result == null)
                 {
                     return NotFound();

@@ -9,5 +9,6 @@ namespace Api.Domain.Interfaces.Repository
         Task<UserEntity> ValidateCredentials(string email);
         Task<UserEntity> RefreshUserInfo(UserEntity user);
         Task<bool> RevokeToken(string email);
+        Task<UserEntity> FindByEmail(string email);
     }
 }

@@ -10,6 +10,7 @@ namespace Api.Domain.Interfaces.Services
     {
         Task<IEnumerable<UserDTO>> GetAll();
         Task<UserDTO> GetById(Guid id);
+        Task<UserDTO> GetByEmail(string email);
         Task<UserCreateResultDTO> Create(UserCreateDTO user);
         Task<UserUpdateResultDTO> Update(UserUpdateDTO user);
         Task<bool> Delete(Guid id);

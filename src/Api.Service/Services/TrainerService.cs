@@ -36,6 +36,11 @@ namespace Api.Service.Services
             return _mapper.Map<TrainerCompleteDTO>(await _repository.FindCompleteById(id));
         }
 
+        public async Task<TrainerCompleteDTO> GetCompleteTrainerByUserId(Guid userId)
+        {
+            return _mapper.Map<TrainerCompleteDTO>(await _repository.FindCompleteByUserId(userId));
+        }
+
         public async Task<TrainerDTO> GetById(Guid id)
         {
             return _mapper.Map<TrainerDTO>(await _repository.FindByIdAsync(id));

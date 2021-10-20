@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import api from '../../services/api';
 
@@ -29,7 +29,18 @@ export default function Login() {
             localStorage.setItem('accessToken', response.data.accessToken);
             localStorage.setItem('refreshToken', response.data.refreshToken);
 
-            history.push('/pokemons');
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${response.data.accessToken}`
+                },
+                params: { email: email }
+            };
+
+            const userResponse = await api.get('api/user/getByEmail', config);
+
+            localStorage.setItem('userLoggedId', userResponse.data.id)
+
+            history.push('/selector');
         } catch (error) {
             alert('Login failed! Try again!');
         }
@@ -57,6 +68,8 @@ export default function Login() {
                     />
 
                     <button className="button" type="submit">Login</button>
+
+                    <a classname="registration-link" href="/registerUser">Don't have a account? Register</a>
                 </form>
 
             </section>
