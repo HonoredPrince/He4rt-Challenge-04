@@ -13,6 +13,8 @@ import logoImage from '../../assets/pokedexLogo.png';
 
 
 export default function AddPokemon() {
+    //const [pokemons, setPokemons] = useState([]);
+    //const [trainerPokemons, setTrainerPokemons] = useState([]);
     const [pokemons, setPokemons] = useState([]);
 
     const { trainerId } = useParams();
@@ -28,12 +30,15 @@ export default function AddPokemon() {
     };
 
     useEffect(() => {
-        loadPokemons();
+        fetchPokemonsForCapturing();
     }, [accessToken]);
 
-    async function loadPokemons() {
-        const response = await api.get('api/pokemon', authorization);
-        setPokemons([...pokemons, ...response.data]);
+    async function fetchPokemonsForCapturing() {
+        const pokemonsRegistered = await api.get('api/pokemon', authorization);
+        const trainerData = await api.get(`api/trainer/completeTrainerById/${trainerId}`, authorization);
+        const filteredPokemons = pokemonsRegistered.data.filter(pokemon => !trainerData.data.pokemons.find(trainerPokemon => pokemon.id === trainerPokemon.id));
+
+        setPokemons([...pokemons, ...filteredPokemons]);
     }
 
     async function addPokemon(id, name) {
@@ -44,7 +49,6 @@ export default function AddPokemon() {
         }
 
         try {
-            console.log(data);
             await api.post(`api/trainer/addPokemonToPokedex/${trainerId}`, data, authorization)
         } catch (error) {
             alert('Error while adding Pokemon to this trainer pokedex! Try again!')
@@ -57,10 +61,10 @@ export default function AddPokemon() {
     }
 
     return (
-        <div className="book-container">
+        <div className="capture-pokemon-container">
             <div className="content">
                 <section className="form">
-                    <img src={logoImage} alt="Erudio" />
+                    <img src={logoImage} alt="pokedexLogo" />
                     <Link className="back-link" to="/trainer">
                         <FiArrowLeft size={16} color="#251fc5" />
                         Back to Trainer

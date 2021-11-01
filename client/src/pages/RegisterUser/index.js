@@ -18,18 +18,16 @@ export default function Register() {
     async function registration(e) {
         e.preventDefault();
 
-        const data = {
+        const userData = {
             email,
             password,
         };
-
-        //const { password, confirmationPassword } = this.state;
 
         if (password !== confirmationPassword) {
             alert("Passwords don't match")
         } else {
             try {
-                await api.post('api/user', data);
+                await api.post('api/user', userData);
 
                 history.push('/');
             } catch (error) {
@@ -39,11 +37,11 @@ export default function Register() {
     }
 
     return (
-        <div className="login-container">
+        <div className="registration-container">
             <section className="form">
-                <img src={logoImage} alt="Erudio Logo" />
+                <img src={logoImage} alt="pixelmonLogo" />
                 <form onSubmit={registration}>
-                    <h1>Make your Account</h1>
+                    <h1>Make a Account</h1>
 
                     <input
                         placeholder="Email"
@@ -64,10 +62,8 @@ export default function Register() {
                         value={confirmationPassword}
                         onChange={e => setConfirmationPassword(e.target.value)}
                     />
-
                     <button className="button" type="submit">Register</button>
                 </form>
-
             </section>
         </div>
     )

@@ -1,4 +1,4 @@
-.new-book-container {
+.add-pokemon-container {
     width: 100%;
     max-width: 1120px;
     height: 100vh;
@@ -9,7 +9,7 @@
     justify-content: space-between;
 }
 
-.new-book-container .content {
+.add-pokemon-container .content {
     width: 100%;
     padding: 96px;
     background: #F0F0F5;
@@ -22,40 +22,40 @@
 
 }
 
-.new-book-container .content section {
+.add-pokemon-container .content section {
     width: 100%;
     max-width: 380px;
 }
 
-.new-book-container section.form{
+.add-pokemon-container section.form{
     width: 100%;
     max-width: 350px;
     margin-right: 30px;
 }
 
-.new-book-container section.form img {
+.add-pokemon-container section.form img {
     width: 45%;
     margin-left: auto;
     margin-right: auto;
     display: block;
 }
 
-.new-book-container .content section h1{
+.add-pokemon-container .content section h1{
     margin: 64px 0 32px;
     font-size: 32px;
 }
 
-.new-book-container .content section p {
+.add-pokemon-container .content section p {
     font-size: 18px;
     color: #737380;
     line-height: 32px;
 }
 
-.new-book-container .content form {
+.add-pokemon-container .content form {
     width: 100%;
     max-width: 450px;
 }
 
-.new-book-container .content form input {
+.add-pokemon-container .content form input {
     margin-top: 8px;
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FiArrowLeft, FiPower, FiEdit, FiTrash2, FiLogOut } from 'react-icons/fi'
+import { FiArrowLeft, FiTrash2, FiLogOut } from 'react-icons/fi'
 import { Link, useHistory } from 'react-router-dom';
 
 import api from '../../services/api';
@@ -58,9 +58,9 @@ export default function Pokemon() {
     }
 
     return (
-        <div className="book-container">
+        <div className="pokemons-container">
             <header>
-                <img src={logoImage} alt="Erudio" />
+                <img src={logoImage} alt="pokedexLogo" />
                 <span>Welcome, <strong>{userEmail.toLowerCase()}</strong>!</span>
                 <Link className="button" to="/addPokemon">Add New Pokemon</Link>
                 <Link className="back-link" to="/selector">

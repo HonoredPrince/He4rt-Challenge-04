@@ -39,10 +39,10 @@ export default function AddPokemon() {
     }
 
     return (
-        <div className="new-book-container">
+        <div className="add-pokemon-container">
             <div className="content">
                 <section className="form">
-                    <img src={logoImage} alt="Erudio" />
+                    <img src={logoImage} alt="pokedexLogo" />
                     <h1>Add A New Pokemon</h1>
                     <p>Enter the pokemon name to add from PokeApi</p>
                     <Link className="back-link" to="/pokemons">

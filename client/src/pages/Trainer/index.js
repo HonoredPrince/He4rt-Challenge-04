@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { FiArrowLeft, FiPower, FiEdit, FiTrash2, FiLogOut } from 'react-icons/fi'
+import { FiArrowLeft, FiTrash2, FiLogOut } from 'react-icons/fi'
 import { Link, useHistory } from 'react-router-dom';
 
 import api from '../../services/api';
 
 import './styles.css';
 
-import logoImage from '../../assets/pokedexLogo.png';
 import trainerPngJson from '../../json/TrainerSprites.json'
 
 export default function Trainer() {
@@ -72,7 +71,7 @@ export default function Trainer() {
     }
 
     return (
-        <div className="book-container">
+        <div className="trainer-container">
             <header>
                 <img src="https://archives.bulbagarden.net/media/upload/3/3a/Spr_B2W2_Ace_Trainer_M.png" alt="trainerPng" />
                 <span>Welcome, <strong>{capitalize(trainerName)}</strong>!</span>

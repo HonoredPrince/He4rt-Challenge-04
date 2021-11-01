@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import api from '../../services/api';
 
 import './styles.css';
 
 import logoImage from '../../assets/pixelmonLogo.png'
+import axios from 'axios';
 
 export default function Login() {
 
@@ -36,21 +37,34 @@ export default function Login() {
                 params: { email: email }
             };
 
+            const authorization = {
+                headers: {
+                    Authorization: `Bearer ${response.data.accessToken}`
+                }
+            };
+
             const userResponse = await api.get('api/user/getByEmail', config);
 
-            localStorage.setItem('userLoggedId', userResponse.data.id)
+            localStorage.setItem('userLoggedId', userResponse.data.id);
+
+            await api.get(`api/trainer/completeTrainerByUserId/${userResponse.data.id}`, authorization);
 
             history.push('/selector');
         } catch (error) {
-            alert('Login failed! Try again!');
-        }
+            console.log(error.response.status);
 
+            if (error.response.status === 404) {
+                history.push('/registerTrainer');
+            } else {
+                alert('Login failed! Try again!');
+            }
+        }
     }
 
     return (
         <div className="login-container">
             <section className="form">
-                <img src={logoImage} alt="Erudio Logo" />
+                <img src={logoImage} alt="pixelmonLogo" />
                 <form onSubmit={login}>
                     <h1>Access your Account</h1>
 
@@ -69,7 +83,7 @@ export default function Login() {
 
                     <button className="button" type="submit">Login</button>
 
-                    <a classname="registration-link" href="/registerUser">Don't have a account? Register</a>
+                    <p>Don't have a account? <a className="registration-link" href="/registerUser">Register now</a> </p>
                 </form>
 
             </section>
