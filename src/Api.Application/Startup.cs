@@ -27,12 +27,14 @@ namespace Application
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IWebHostEnvironment _environment;
+        public IConfiguration Configuration { get; set; }
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            _environment = environment;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -160,11 +162,7 @@ namespace Application
                 endpoints.MapControllers();
             });
 
-            //This method using the string variable is only temporary until the environment variables are created 
-            string migrationStatus;
-            migrationStatus = "APLICAR";
-            //migrationStatus = "NAOAPLICAR";
-            if (migrationStatus == "APLICAR".ToLower())
+            if (Environment.GetEnvironmentVariable("MIGRATION_STATUS").ToLower() == "APLICAR".ToLower())
             {
                 using (var service = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
                 {

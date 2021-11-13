@@ -22,7 +22,9 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "DB_PROVIDER": "MYSQL",
-                "DB_CONNECTION_STRING": "Persist Security Info=True;Server=localhost;Port=3306;Database=PokeAPI-Heart-Challenge;Uid=root;Pwd=451236",
+                //LocalDBString: "Persist Security Info=True;Server=localhost;Port=3306;Database=PokeAPI-Heart-Challenge;Uid=root;Pwd=451236"
+                //DockerDBString: "Persist Security Info=True;Server=db;Port=3306;Database=pokeapi-heart-challenge;Uid=root;Pwd=docker;SslMode=none;"
+                "DB_CONNECTION_STRING": "Persist Security Info=True;Server=db;Port=3306;Database=pokeapi-heart-challenge;Uid=root;Pwd=docker;SslMode=none;",
                 "MIGRATION_STATUS": "APLICAR",
             },
             "sourceFileMap": {

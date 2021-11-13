@@ -27,6 +27,9 @@ services:
     environment:
       TZ: America/Sao_Paulo
       ASPNETCORE_ENVIRONMENT: Development
+      DB_PROVIDER: MYSQL
+      DB_CONNECTION_STRING: Persist Security Info=True;Server=db;Port=3306;Database=pokeapi-heart-challenge;Uid=root;Pwd=docker;SslMode=none;
+      MIGRATION_STATUS: APLICAR
     ports:
       - 44300:80
     depends_on:
