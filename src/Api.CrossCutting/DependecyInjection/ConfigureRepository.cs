@@ -15,7 +15,9 @@ namespace Api.CrossCutting.DependecyInjection
             serviceCollection.AddScoped<IPokemonRepository, PokemonRepository>();
             serviceCollection.AddScoped<IUserRepository, UserRepository>();
 
-            var connectionString = "Persist Security Info=True;Server=localhost;Port=3306;Database=PokeAPI-Heart-Challenge;Uid=root;Pwd=451236";
+            //var connectionString = "Persist Security Info=True;Server=localhost;Port=3306;Database=PokeAPI-Heart-Challenge;Uid=root;Pwd=451236";
+            //For Docker
+            var connectionString = "Persist Security Info=True;Server=db;Port=3306;Database=pokeapi-heart-challenge;Uid=root;Pwd=docker;SslMode=none;";
             serviceCollection.AddDbContext<MyContext>(
                 options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
             );
