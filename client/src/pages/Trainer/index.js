@@ -6,11 +6,12 @@ import api from '../../services/api';
 
 import './styles.css';
 
-import trainerPngJson from '../../json/TrainerSprites.json'
+//import trainerPngJson from '../../json/TrainerSprites.json';
+import trainerImages from './trainerImages';
 
 export default function Trainer() {
 
-    const [trainerSpriteUrl, setTrainerSpriteUrl] = useState('');
+    const [trainerSprite, setTrainerSprite] = useState('');
 
     const [trainerId, setTrainerId] = useState(null);
     const [trainerName, setTrainerName] = useState('');
@@ -32,7 +33,7 @@ export default function Trainer() {
 
     useEffect(() => {
         fetchTrainerWithPokemons();
-        setTrainerSpriteUrl(trainerPngJson[Math.floor(Math.random() * trainerPngJson.length)].sprite_url);
+        setTrainerSprite(randomObjectProperty(trainerImages));
     }, [accessToken]);
 
     async function fetchTrainerWithPokemons() {
@@ -70,10 +71,15 @@ export default function Trainer() {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
 
+    function randomObjectProperty(obj) {
+        var keys = Object.keys(obj);
+        return obj[keys[ keys.length * Math.random() << 0]];
+    }
+
     return (
         <div className="trainer-container">
             <header>
-                <img src="https://archives.bulbagarden.net/media/upload/3/3a/Spr_B2W2_Ace_Trainer_M.png" alt="trainerPng" />
+                <img src={trainerSprite} alt="trainerPng" />
                 <span>Welcome, <strong>{capitalize(trainerName)}</strong>!</span>
                 <span>Region: <strong>{capitalize(trainerRegion)}</strong></span>
                 <span>Age: <strong>{trainerAge}</strong></span>
